@@ -1,0 +1,5 @@
+.dev/
+__pycache__/
+*.pyc
+.DS_Store
+./img/*.png

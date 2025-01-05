@@ -41,8 +41,12 @@ python3 ./sample_heat_agent.py
 A sample logging program is included for teaching purposes:
 
 ```sh
+# create a sqlite3 database db.sqlite3
 python3 ./sample_logging.py
-# will create a sqlite3 database db.sqlite3
+
+# dump database
+echo .dump | sqlite3 db.sqlite3
+
 ```
 
 ## API endpoints
@@ -53,3 +57,8 @@ python3 ./sample_logging.py
 - http://localhost:8080/heat-source/on - switch heat source on
 - http://localhost:8080/heat-source/off - switch heat source off
 - http://localhost:8080/heat-source/temp/{temp} - set heat source temperature
+
+## Future Work
+
+- Exponential step function for the heating system
+  - Switches on and comes up to temperaute

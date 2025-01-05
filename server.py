@@ -48,7 +48,7 @@ async def set_heat_source_temperature(request):
 
 
 async def get_thermostat(request):
-    return web.json_response({"value": sim.sensor_thermostat})
+    return web.json_response({"value": sim.sensor_thermostat_state})
 
 
 async def index(request):

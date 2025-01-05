@@ -1,6 +1,6 @@
 """
 
-Sample heating agent that switches the heating on and off based on the thermostat temperature.
+Sample heating agent that switches the heating on and off based on the thermostat state.
 
 """
 
@@ -16,7 +16,8 @@ response.raise_for_status()
 
 while True:
     response = requests.get(f"{API_URL}/sensor")
-    temp = response.json()["value"]
+    dict_data = response.json()
+    temp = dict_data["value"]
 
     # get the thermostat state
     response = requests.get(f"{API_URL}/thermostat")

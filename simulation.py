@@ -34,31 +34,32 @@ def diffuse_heat_fdtd(grid, dx=1.0, dt=1.0, D=0.25):
 
 
 class AsyncSimulation:
-    def __init__(self, width=10, height=10, alpha=0.25, period=0.1):
+    def __init__(self, width=10, height=10, period=0.1):
         self.running = True
-        self.echo = True
-
-        self.alpha = alpha
+        self.echo = True  # echo to console
 
         self.width = width
         self.height = height
 
-        self.center_x = width // 2
-        self.center_y = height // 2
-
         self.step = 0
         self.period = period
 
+        self.ambient_temperature = 5.0
+
+        # heat source
+        self.center_x = width // 2
+        self.center_y = height // 2
         self.heat_source_is_on = True
         self.heat_source_temperature = 60.0
-        self.heat_source_size = 3
-        self.ambient_temperature = 5.0
+
+        self.heat_price = 0.2
+        self.cost = None
 
         self.sensor_x = 2
         self.sensor_y = 2
-        self.sensor_value = 0
+        self.sensor_value = None
 
-        self.sensor_thermostat = None
+        self.sensor_thermostat_state = False  # True if the thermostat is on
         self.sensor_thermostat_temperature = 10.0
 
         # initialize grid
@@ -79,6 +80,7 @@ class AsyncSimulation:
         while self.running:
 
             if self.heat_source_is_on:
+
                 self.grid[
                     self.center_x - 1 : self.center_x + 1,
                     self.center_y - 1 : self.center_y + 1,
@@ -90,6 +92,7 @@ class AsyncSimulation:
             self.sensor_value = self.grid[self.sensor_x, self.sensor_y]
 
             # Reset edges to ambient temperature
+            # TODO: this is a hack, we should not reset the edges
             self.grid[0, :] = self.ambient_temperature
             self.grid[-1, :] = self.ambient_temperature
             self.grid[:, 0] = self.ambient_temperature
@@ -97,13 +100,13 @@ class AsyncSimulation:
 
             # sensor: check thermostat threshold
             if self.sensor_value > self.sensor_thermostat_temperature:
-                self.sensor_thermostat = True
+                self.sensor_thermostat_state = True
             else:
-                self.sensor_thermostat = False
+                self.sensor_thermostat_state = False
 
             if self.step % 10 == 0 and self.echo:
                 print(
-                    f"Step {self.step}, {self.sensor_value}, {self.sensor_thermostat}"
+                    f"Step {self.step}, {self.sensor_value}, {self.sensor_thermostat_state}"
                 )
 
             self.step += 1

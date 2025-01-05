@@ -46,6 +46,7 @@ def dump_data(path=DB_PATH):
 if __name__ == "__main__":
     logging.info("Initializing database: %s", DB_PATH)
     init_db()
+
     while True:
         logging.info("Fetching data from API: %s", API_URL)
         response = requests.get(API_URL)
@@ -55,5 +56,6 @@ if __name__ == "__main__":
 
         logging.info("Inserting data into database: %s", value)
         insert_data(value)
+
         logging.info("Sleeping..")
         time.sleep(SLEEP)

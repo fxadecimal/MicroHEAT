@@ -28,6 +28,16 @@ python3 ./server.py
 # server running at http://localhost:8080
 ```
 
+## Sample Heating System Agent
+
+A sample heating "agent" or automation strategy is given in `sample_heat_agent.py` this will read the thermostat state and switch the heat on or off via the API
+
+```sh
+python3 ./sample_heat_agent.py
+```
+
+## Logging Sample Program
+
 A sample logging program is included for teaching purposes:
 
 ```sh

@@ -84,16 +84,16 @@ class AsyncSimulation:
                     self.center_y - 1 : self.center_y + 1,
                 ] = self.heat_source_temperature
 
-            # Set edges to ambient temperature
-            self.grid[0, :] = self.ambient_temperature
-            self.grid[-1, :] = self.ambient_temperature
-            self.grid[:, 0] = self.ambient_temperature
-            self.grid[:, -1] = self.ambient_temperature
-
             # do the diffusion
             self.grid = diffuse_heat_fdtd(self.grid)
             # sensor: measure the grid
             self.sensor_value = self.grid[self.sensor_x, self.sensor_y]
+
+            # Reset edges to ambient temperature
+            self.grid[0, :] = self.ambient_temperature
+            self.grid[-1, :] = self.ambient_temperature
+            self.grid[:, 0] = self.ambient_temperature
+            self.grid[:, -1] = self.ambient_temperature
 
             # sensor: check thermostat threshold
             if self.sensor_value > self.sensor_thermostat_temperature:
@@ -117,10 +117,11 @@ def visualise_heat_diffusion_animated(width=50, height=50, n_steps=100):
     # plt.figure(figsize=(width, width))
 
     grid[width // 2 - 2 : width // 2 + 2, width // 2 - 2 : width // 2 + 2] = 100
+
     for step in range(n_steps):
 
         plt.clf()
-        plt.imshow(grid, cmap="hot", vmin=0, vmax=100)
+        plt.imshow(grid, cmap="hot", vmin=0, vmax=50)
         plt.colorbar()
         plt.title(f"Heat Distribution at step {step}")
         plt.pause(0.1)

@@ -2,4 +2,8 @@
 __pycache__/
 *.pyc
 .DS_Store
-./img/*.png
+img/*.png
+.env
+.venv
+*.log
+*.sqlite3

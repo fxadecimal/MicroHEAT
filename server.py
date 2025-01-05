@@ -51,7 +51,15 @@ async def get_thermostat(request):
     return web.json_response({"value": sim.sensor_thermostat})
 
 
+async def index(request):
+    return aiohttp.web.FileResponse(
+        "static/index.html", headers={"Content-Type": "text/html"}
+    )
+
+
 app = web.Application()
+# app.router.add_static("/", path="static", name="static")
+app.router.add_get("/", index)
 app.router.add_get("/reset", reset)
 app.router.add_get("/sensor", get_simulation_value)
 app.router.add_get("/thermostat", set_heat_source_on)

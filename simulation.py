@@ -19,6 +19,7 @@ def diffuse_heat_fdtd(grid, dx=1.0, dt=1.0, D=0.25):
         raise ValueError(f"Simulation unstable: error = {error}")
 
     new_grid = grid.copy()
+
     for i in range(1, grid.shape[0] - 1):
         for j in range(1, grid.shape[1] - 1):
 
@@ -31,6 +32,11 @@ def diffuse_heat_fdtd(grid, dx=1.0, dt=1.0, D=0.25):
             )
 
     return new_grid
+
+
+def exponential_function_over_time(t, A=1.0, tau=1.0):
+    """Exponential function A * exp(-t/tau)"""
+    return A * np.exp(-t / tau)
 
 
 class AsyncSimulation:
@@ -92,11 +98,6 @@ class AsyncSimulation:
             self.sensor_value = self.grid[self.sensor_x, self.sensor_y]
 
             # Reset edges to ambient temperature
-            # TODO: this is a hack, we should not reset the edges
-            self.grid[0, :] = self.ambient_temperature
-            self.grid[-1, :] = self.ambient_temperature
-            self.grid[:, 0] = self.ambient_temperature
-            self.grid[:, -1] = self.ambient_temperature
 
             # sensor: check thermostat threshold
             if self.sensor_value > self.sensor_thermostat_temperature:
@@ -119,9 +120,11 @@ def visualise_heat_diffusion_animated(width=50, height=50, n_steps=100):
     grid = np.zeros((width, width))
     # plt.figure(figsize=(width, width))
 
-    grid[width // 2 - 2 : width // 2 + 2, width // 2 - 2 : width // 2 + 2] = 100
-
     for step in range(n_steps):
+
+        grid[width // 2 - 2 : width // 2 + 2, width // 2 - 2 : width // 2 + 2] = max(
+            0, 100
+        )
 
         plt.clf()
         plt.imshow(grid, cmap="hot", vmin=0, vmax=50)

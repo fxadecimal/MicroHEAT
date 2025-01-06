@@ -7,3 +7,4 @@ img/*.png
 .venv
 *.log
 *.sqlite3
+*.csv

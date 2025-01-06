@@ -41,8 +41,11 @@ python3 ./sample_heat_agent.py
 A sample logging program is included for teaching purposes:
 
 ```sh
+# create a sqlite3 database dict.sqlite3
+python3 ./sample_logging_dict.py
+#or
 # create a sqlite3 database db.sqlite3
-python3 ./sample_logging.py
+python3 ./sample_logging_sqlite.py
 
 # dump database
 echo .dump | sqlite3 db.sqlite3
@@ -61,4 +64,4 @@ echo .dump | sqlite3 db.sqlite3
 ## Future Work
 
 - Exponential step function for the heating system
-  - Switches on and comes up to temperaute
+  - Switches on and comes up to temperature

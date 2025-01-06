@@ -4,7 +4,7 @@ import time
 import requests
 
 DB_PATH = "db.sqlite3"
-API_URL = "http://localhost:8080/sensor"
+API_URL = "http://localhost:8080"
 SLEEP = 10
 
 logging.basicConfig(level=logging.INFO)
@@ -49,7 +49,7 @@ if __name__ == "__main__":
 
     while True:
         logging.info("Fetching data from API: %s", API_URL)
-        response = requests.get(API_URL)
+        response = requests.get(f"{API_URL}/sensor")
         response.raise_for_status()
         response = response.json()
         value = response["value"]
